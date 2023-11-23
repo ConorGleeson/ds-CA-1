@@ -7,7 +7,8 @@ import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 const ddbDocClient = createDDbDocClient();
 
-export const handler: APIGatewayProxyHandlerV2 = async (event, context) => { // Note change 
+export const handler: APIGatewayProxyHandlerV2 = async (event, context) => { 
+
    try {
     // Print Event
     console.log("Event: ", event);
