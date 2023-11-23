@@ -142,6 +142,19 @@ export class AppApi extends Construct {
           },
         });
 
+        const addReviewFn = new lambdanode.NodejsFunction(this, "addReviewFn",{
+          architecture: lambda.Architecture.ARM_64,
+          runtime: lambda.Runtime.NODEJS_16_X,
+          entry: `./lambda/reviews/addReview.ts`,
+          timeout: cdk.Duration.seconds(10),
+          memorySize: 128,
+          environment: {
+            TABLE_NAME: reviewsTable.tableName,
+            REGION: "eu-west-1",
+          },
+        })
+
+
     // Seeding the table
     new custom.AwsCustomResource(this, "moviesddbInitData", {
       onCreate: {
@@ -168,6 +181,7 @@ export class AppApi extends Construct {
 
       reviewsTable.grantReadData(getAllReviewsFn)
       reviewsTable.grantReadData(getReviewsByNameFn)
+      reviewsTable.grantReadWriteData(addReviewFn)
 
 
       const appApi = new apig.RestApi(this, "AppApi", {
@@ -195,6 +209,8 @@ export class AppApi extends Construct {
 
     const reviewsEndpoint =   publicMovie.addResource("reviews");
     reviewsEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsFn, {proxy: true}));
+
+    reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(addReviewFn, {proxy: true}));
 
     const reviewsNameEndpoint = reviewsEndpoint.addResource("{username}");
     reviewsNameEndpoint.addMethod("GET", new apig.LambdaIntegration(getReviewsByNameFn, {proxy: true}));
