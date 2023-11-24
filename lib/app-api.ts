@@ -207,8 +207,10 @@ export class AppApi extends Construct {
 
     publicMovie.addMethod("DELETE", new apig.LambdaIntegration(removeMovieFn, {proxy: true}));
 
-    const reviewsEndpoint =   publicMovie.addResource("reviews");
-    reviewsEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsFn, {proxy: true}));
+    const reviewsIdEndpoint =   publicMovie.addResource("reviews");
+    reviewsIdEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsFn, {proxy: true}));
+
+    const reviewsEndpoint = publicMovies.addResource("reviews");
 
     reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(addReviewFn, {proxy: true}));
 
