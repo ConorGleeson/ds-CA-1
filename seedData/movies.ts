@@ -67,7 +67,7 @@ export const movies : Movie[] = [
     
     {
       movieId: 4567,
-      username: "user2",
+      username: "user1",
       review: "Review 2",
       rating: 5,
       reviewDate: "2020-11-20"

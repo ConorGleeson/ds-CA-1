@@ -1,11 +1,14 @@
 import { Handler } from "aws-lambda";
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, QueryCommandOutput, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, ScanCommandOutput, ScanCommand, ScanCommandInput} from "@aws-sdk/lib-dynamodb";
 
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
+//scancommand docs https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html
 const ddbDocClient = createDDbDocClient();
+
+
 
 export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
     try {
@@ -22,17 +25,17 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
             };
         }
 
-        const commandOutput = await ddbDocClient.send(
-            new QueryCommand({
-                TableName: "Reviews",
-                KeyConditionExpression: "username = :username",
-                ExpressionAttributeValues: {
-                    ":username": username,
-                },
-            })
-        );
+       const scancommand: ScanCommandInput = {
+              TableName: "Reviews",
+              FilterExpression: "username = :username",
+              ExpressionAttributeValues: {
+                ":username": username
+              }
+            }
 
-        console.log("GetCommand response: ", commandOutput);
+            const commandOutput = await ddbDocClient.send(
+                new ScanCommand(scancommand)
+            );
 
         if (!commandOutput.Items) {
             return {
