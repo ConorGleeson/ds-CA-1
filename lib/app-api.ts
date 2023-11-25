@@ -130,10 +130,10 @@ export class AppApi extends Construct {
           },
         });
 
-        const getReviewsByNameFn = new lambdanode.NodejsFunction(this, "GetReviewsByNameFn", {
+        const getReviewsByYearorNameFn = new lambdanode.NodejsFunction(this, "GetReviewsByYearOrNameFn", {
           architecture: lambda.Architecture.ARM_64,
           runtime: lambda.Runtime.NODEJS_16_X,
-          entry: `./lambda/reviews/getReviewsByName.ts`,
+          entry: `./lambda/reviews/getReviewsByYearorName.ts`,
           timeout: cdk.Duration.seconds(10),
           memorySize: 128,
           environment: {
@@ -192,7 +192,7 @@ export class AppApi extends Construct {
       moviesTable.grantReadWriteData(removeMovieFn)
 
       reviewsTable.grantReadData(getAllReviewsFn)
-      reviewsTable.grantReadData(getReviewsByNameFn)
+      reviewsTable.grantReadData(getReviewsByYearorNameFn)
       reviewsTable.grantReadWriteData(addReviewFn)
       reviewsTable.grantReadWriteData(updateReviewFn)
 
@@ -222,14 +222,16 @@ export class AppApi extends Construct {
 
     const reviewsIdEndpoint =   publicMovie.addResource("reviews");
     reviewsIdEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsFn, {proxy: true}));
+    
 
     const reviewsEndpoint = publicMovies.addResource("reviews");
 
     reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(addReviewFn, {proxy: true}));
 
-    const reviewsNameEndpoint = reviewsEndpoint.addResource("{username}");
-    reviewsNameEndpoint.addMethod("GET", new apig.LambdaIntegration(getReviewsByNameFn, {proxy: true}));
+    const reviewsNameEndpoint = reviewsIdEndpoint.addResource("{username}");
+    reviewsNameEndpoint.addMethod("GET", new apig.LambdaIntegration(getReviewsByYearorNameFn, {proxy: true}));
     reviewsNameEndpoint.addMethod("PUT", new apig.LambdaIntegration(updateReviewFn, {proxy: true}));
+    
 
 
 
