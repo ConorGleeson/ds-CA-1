@@ -71,7 +71,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
       input.ExpressionAttributeValues![":type"] = type.substring(0,4);
       inputType = "year";
     }else{
-      input.KeyConditionExpression += "username = :type";
+      input.KeyConditionExpression +=" AND begins_with(username, :type)";
       input.ExpressionAttributeValues![":type"] = type;
       inputType = "username";
 
