@@ -178,6 +178,17 @@ export class AppApi extends Construct {
           },
         })
 
+        const translateReviewFn = new lambdanode.NodejsFunction(this, "translateReviewFn",{
+          architecture: lambda.Architecture.ARM_64,
+          runtime: lambda.Runtime.NODEJS_16_X,
+          entry: `./lambda/reviews/translateReview.ts`,
+          timeout: cdk.Duration.seconds(10),
+          memorySize: 128,
+          environment: {
+            REGION: "eu-west-1",
+          },
+        })
+
 
     // Seeding the table
     new custom.AwsCustomResource(this, "moviesddbInitData", {
@@ -208,6 +219,7 @@ export class AppApi extends Construct {
       reviewsTable.grantReadWriteData(addReviewFn)
       reviewsTable.grantReadWriteData(updateReviewFn)
       reviewsTable.grantReadData(getAllReviewsByReviewerFn)
+      reviewsTable.grantReadWriteData(translateReviewFn)
 
 
       const appApi = new apig.RestApi(this, "AppApi", {
@@ -250,6 +262,8 @@ export class AppApi extends Construct {
     reviewerEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsByReviewerFn, {proxy: true}));
     
 
+    const translateEndpoint = reviewsNameEndpoint.addResource("translate");
+    translateEndpoint.addMethod("GET", new apig.LambdaIntegration(translateReviewFn, {proxy: true}));
 
 
     // Private Routes
