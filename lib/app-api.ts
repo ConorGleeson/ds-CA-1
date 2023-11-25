@@ -166,6 +166,18 @@ export class AppApi extends Construct {
           },
         })
 
+        const getAllReviewsByReviewerFn = new lambdanode.NodejsFunction(this, "getAllReviewsByReviewerFn",{
+          architecture: lambda.Architecture.ARM_64,
+          runtime: lambda.Runtime.NODEJS_16_X,
+          entry: `./lambda/reviews/getAllReviewsByReviewer.ts`,
+          timeout: cdk.Duration.seconds(10),
+          memorySize: 128,
+          environment: {
+            TABLE_NAME: reviewsTable.tableName,
+            REGION: "eu-west-1",
+          },
+        })
+
 
     // Seeding the table
     new custom.AwsCustomResource(this, "moviesddbInitData", {
@@ -195,6 +207,7 @@ export class AppApi extends Construct {
       reviewsTable.grantReadData(getReviewsByYearorNameFn)
       reviewsTable.grantReadWriteData(addReviewFn)
       reviewsTable.grantReadWriteData(updateReviewFn)
+      reviewsTable.grantReadData(getAllReviewsByReviewerFn)
 
 
       const appApi = new apig.RestApi(this, "AppApi", {
@@ -231,6 +244,10 @@ export class AppApi extends Construct {
     const reviewsNameEndpoint = reviewsIdEndpoint.addResource("{type}");
     reviewsNameEndpoint.addMethod("GET", new apig.LambdaIntegration(getReviewsByYearorNameFn, {proxy: true}));
     reviewsNameEndpoint.addMethod("PUT", new apig.LambdaIntegration(updateReviewFn, {proxy: true}));
+
+
+    const reviewerEndpoint = reviewsEndpoint.addResource("{username}");
+    reviewerEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsByReviewerFn, {proxy: true}));
     
 
 
