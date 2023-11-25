@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, QueryCommandOutput, QueryCommand} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, QueryCommandOutput, QueryCommand, QueryCommandInput} from "@aws-sdk/lib-dynamodb";
 
 import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 import { QueryString } from "aws-cdk-lib/aws-logs";
@@ -15,8 +15,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
      const parameters  = event?.pathParameters;
      const movieId = parameters?.movieId;
      const username = parameters?.username;
+     const type = parameters?.type;
 
-    if(!username || !movieId){
+     
+     const yearCheck = new RegExp("20[0-9][0-9]")
+     
+
+    if(!movieId){
       return {
         statusCode: 404,
         headers: {
@@ -26,15 +31,54 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
       };
     }
 
-    const commandOutput = await ddbDocClient.send(
-        new QueryCommand({
-        TableName   : "Reviews",
-        KeyConditionExpression: "username = :username and movieId = :movieId",
-        ExpressionAttributeValues: {
-          ":username": username,
-            ":movieId": Number(movieId),
+    if(!type){
+      return {
+        statusCode: 404,
+        headers: {
+          "content-type": "application/json",
         },
-    })
+        body: JSON.stringify({ Message: "No type" }),
+      };
+    }
+
+    // const commandOutput = await ddbDocClient.send(
+    //     new QueryCommand({
+    //     TableName   : "Reviews",
+    //     KeyConditionExpression: "username = :username and movieId = :movieId",
+    //     ExpressionAttributeValues: {
+    //       ":username": username,
+    //         ":movieId": Number(movieId),
+    //     },
+    // })
+    // );
+
+    const input: QueryCommandInput = {
+      TableName   : "Reviews",
+      KeyConditionExpression: "movieId = :movieId",
+      ExpressionAttributeValues: {
+          ":movieId": Number(movieId),
+      },
+    };
+    
+    
+
+    let inputType = "";
+
+
+
+    if(yearCheck.test(type)){
+      input.FilterExpression = "begins_with(reviewDate, :type)";
+      input.ExpressionAttributeValues![":type"] = type.substring(0,4);
+      inputType = "year";
+    }else{
+      input.KeyConditionExpression += "username = :type";
+      input.ExpressionAttributeValues![":type"] = type;
+      inputType = "username";
+
+    }
+
+    const commandOutput = await ddbDocClient.send(
+      new QueryCommand(input)
     );
 
     console.log("GetCommand response: ", commandOutput);

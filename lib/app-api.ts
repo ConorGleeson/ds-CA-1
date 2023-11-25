@@ -228,7 +228,7 @@ export class AppApi extends Construct {
 
     reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(addReviewFn, {proxy: true}));
 
-    const reviewsNameEndpoint = reviewsIdEndpoint.addResource("{username}");
+    const reviewsNameEndpoint = reviewsIdEndpoint.addResource("{type}");
     reviewsNameEndpoint.addMethod("GET", new apig.LambdaIntegration(getReviewsByYearorNameFn, {proxy: true}));
     reviewsNameEndpoint.addMethod("PUT", new apig.LambdaIntegration(updateReviewFn, {proxy: true}));
     
