@@ -1,14 +1,39 @@
-# Welcome to your CDK TypeScript project
+## ServerlessREST Sddignment - Distributed Systems.
 
-This is a blank project for CDK development with TypeScript.
+__Name:__ Conor Gleeson
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+This repository contains the implementation of a serverless REST API for the AWS platform. A CDK stack creates the infrastructure. The domain context of the API is movie reviews.
 
-## Useful commands
+### API endpoints.
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+[ Provide a bullet-point list of the app's endpoints (excluding the Auth API endpoints).]
+e.g.
+ 
++ POST /publicMovies/reviews - add a movie review.
++ GET /publicMovies/{movieId}/reviews - Get all the reviews for a movie with the specified id.
++ GET /publicMovies/{movieId}/reviews?minRating=n - Get all the reviews for the movie with the specified ID with a rating greater than the minRating.
++ GET /publicMovies/{movieId}/reviews/{reviewerName} - Get the review for the movie with the specified movie ID and written by the named reviewer.
++ PUT /publicMovies/{movieId}/reviews/{reviwerName} - Update the text of a review
++ GET /publicMovies/{movieId}/reviews/{year} - Get the review for the movie with the specified movie ID and written in a specified year.
++ GET /publicMovies/reviews/{reviewerName} - Get all the reviews written by a specific reviewer.
++ GET /movies/{movieId}/reviews/{reviewerName}/translation?language=code - Get a translated version of the review for the movie with the specified movie ID and written by the      named reviewer.
+
+### Api Gateway
+
+![](./images/api1.png)
+
+![](./images/api1.png)
+
+### Authentication..
+
+[Include a screenshot from the AWS console (Cognito User Pools) showing a confirmed user account.]
+
+![](./images/pool.png)
+
+### Independent learning (If relevant).
+
+[ Briefly explain any aspects of your submission that required independent research and learning, i.e. not covered in the lectures/labs. State the files that have evidence of this.
+
+
+State any other evidence of independent learning achieved while completing this assignment.
+
