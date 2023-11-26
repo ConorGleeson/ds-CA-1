@@ -20,35 +20,35 @@ e.g.
 
 ### Api Gateway
 
-##### API Screen
+### API Screen
 ![](./images/api1.png)
 This image shows the deployed API
 
-##### API Resources
+### API Resources
 ![](./images/api2.png)
 This image shows the API with the list of avalible resources
 
-##### /publicMovies/reviews
+### /publicMovies/reviews
 ![](./images/api3.png)
 This image shows the endpoint to add a review
 
-##### /publicMovies/reviews/{username}
+### /publicMovies/reviews/{username}
 ![](./images/api4.png)
 This image shows the endpoing to get all the reviews written by a specified user
 
-##### /publicMovies/{movieId}/reviews
+### /publicMovies/{movieId}/reviews
 ![](./images/api5.png)
 This image shows the endpoint to get all the reviews for a specified movie
 
-##### /publicMovies/{movieId}/reviews/{type}
+### /publicMovies/{movieId}/reviews/{type}
 ![](./images/api6.png)
 This image shows the endpoint to get the reviews for a specified movie by either a specified year or username
 
-##### /publicMovies/{movieId}/reviews/{type}
+### /publicMovies/{movieId}/reviews/{type}
 ![](./images/api7.png)
 This image shows the put endpoint to update a review
 
-##### /publicMovies/{movieId}/reviews/{type}/translation
+### /publicMovies/{movieId}/reviews/{type}/translation
 ![](./images/api8.png)
 This image shows the endpoint to get a review for a movie written by a specified reviewer and then translate it to a chosen language
 
