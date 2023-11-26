@@ -9,6 +9,10 @@ import * as node from "aws-cdk-lib/aws-lambda-nodejs";
 import * as custom from "aws-cdk-lib/custom-resources";
 import { generateBatch } from "../shared/utils";
 import { movies, reviews } from "../seedData/movies";
+import * as iam from 'aws-cdk-lib/aws-iam';
+
+
+
 type AppApiProps = {
   userPoolId: string;
   userPoolClientId: string;
@@ -231,7 +235,13 @@ export class AppApi extends Construct {
       });
 
 
+      //iam policy statement examples https://snyk.io/advisor/npm-package/@aws-cdk/aws-iam/functions/@aws-cdk%2Faws-iam.PolicyStatement
+      const translateStatment = new iam.PolicyStatement({
+        actions: ["translate:TranslateText"],
+        resources: ["*"], 
+      });
 
+      translateReviewFn.addToRolePolicy(translateStatment);
 
     // Public Routes
 
