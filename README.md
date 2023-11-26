@@ -20,41 +20,59 @@ e.g.
 
 ### Api Gateway
 
-![API Screen](images/api1.png)
+##### API Screen
+![](./images/api1.png)
 This image shows the deployed API
 
-![API Resources](images/api2.png)
+##### API Resources
+![](./images/api2.png)
 This image shows the API with the list of avalible resources
 
-![/publicMovies/reviews](images/api3.png)
+##### /publicMovies/reviews
+![](./images/api3.png)
 This image shows the endpoint to add a review
 
-![/publicMovies/reviews/{username}](images/api4.png)
+##### /publicMovies/reviews/{username}
+![](./images/api4.png)
 This image shows the endpoing to get all the reviews written by a specified user
 
-![/publicMovies/{movieId}/reviews](images/api5.png)
+##### /publicMovies/{movieId}/reviews
+![](./images/api5.png)
 This image shows the endpoint to get all the reviews for a specified movie
 
-![/publicMovies/{movieId}/reviews/{type}](images/api6.png)
+##### /publicMovies/{movieId}/reviews/{type}
+![](./images/api6.png)
 This image shows the endpoint to get the reviews for a specified movie by either a specified year or username
 
-![/publicMovies/{movieId}/reviews/{type}](images/api7.png)
+##### /publicMovies/{movieId}/reviews/{type}
+![](./images/api7.png)
 This image shows the put endpoint to update a review
 
-![/publicMovies/{movieId}/reviews/{type}/translation](images/api8.png)
+##### /publicMovies/{movieId}/reviews/{type}/translation
+![](./images/api8.png)
 This image shows the endpoint to get a review for a movie written by a specified reviewer and then translate it to a chosen language
 
 
 ### Authentication..
 
-![UserPool](./images/auth1.png)
+##### UserPool
+![](./images/auth1.png)
 This image shows of a confirmed user in the cognito user pool
 
 
-### Independent learning (If relevant).
+### Independent learning.
 
-[ Briefly explain any aspects of your submission that required independent research and learning, i.e. not covered in the lectures/labs. State the files that have evidence of this.
+I used AWS tanslate to translate the reviews 
+
+It is found in the file *ds-CA-1\lambda\reviews\translateReview.ts* 
+
+This allows the text of a review to be translated from on language to another by specifying the language code in the endpoint url
+
+Some online references were used to fully implment this:
+
++ https://snyk.io/advisor/npm-package/@aws-cdk/aws-iam/functions/@aws-cdk%2Faws-iam.PolicyStatement
++ https://www.youtube.com/watch?v=xdWpbr1DZHQ
++ https://stackoverflow.com/questions/65023384/translate-is-not-authorized-to-assume-role
 
 
-State any other evidence of independent learning achieved while completing this assignment.
 
