@@ -264,11 +264,22 @@ export class AppApi extends Construct {
 
     const reviewsEndpoint = publicMovies.addResource("reviews");
 
-    reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(addReviewFn, {proxy: true}));
+    reviewsEndpoint.addMethod("POST", new apig.LambdaIntegration(addReviewFn, {proxy: true}),
+    {
+      authorizer: requestAuthorizer,
+      authorizationType: apig.AuthorizationType.CUSTOM,
+    
+    
+    });
 
     const reviewsNameEndpoint = reviewsIdEndpoint.addResource("{type}");
     reviewsNameEndpoint.addMethod("GET", new apig.LambdaIntegration(getReviewsByYearorNameFn, {proxy: true}));
-    reviewsNameEndpoint.addMethod("PUT", new apig.LambdaIntegration(updateReviewFn, {proxy: true}));
+    reviewsNameEndpoint.addMethod("PUT", new apig.LambdaIntegration(updateReviewFn, {proxy: true}),
+    {
+      authorizer: requestAuthorizer,
+      authorizationType: apig.AuthorizationType.CUSTOM,
+    
+    });
 
 
     const reviewerEndpoint = reviewsEndpoint.addResource("{username}");
