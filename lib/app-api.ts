@@ -230,6 +230,9 @@ export class AppApi extends Construct {
         }
       });
 
+
+
+
     // Public Routes
 
 
@@ -262,7 +265,7 @@ export class AppApi extends Construct {
     reviewerEndpoint.addMethod("GET", new apig.LambdaIntegration(getAllReviewsByReviewerFn, {proxy: true}));
     
 
-    const translateEndpoint = reviewsNameEndpoint.addResource("translate");
+    const translateEndpoint = reviewsNameEndpoint.addResource("translation");
     translateEndpoint.addMethod("GET", new apig.LambdaIntegration(translateReviewFn, {proxy: true}));
 
 
