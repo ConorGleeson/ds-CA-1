@@ -60,8 +60,15 @@ export const movies : Movie[] = [
     {
       movieId: 1234,
       username: "user1",
-      review: "Review 1",
-      rating: 7,
+      review: "This is a good movie",
+      rating: 9,
+      reviewDate: "2020-11-20",
+    },
+    {
+      movieId: 1234,
+      username: "user2",
+      review: "This is a bad movie",
+      rating: 2,
       reviewDate: "2020-11-20",
     },
     

@@ -10,7 +10,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
     try{
         const parameters  = event?.pathParameters;
         const movieId = parameters?.movieId;
-        const username = parameters?.username;
+        const username = parameters?.type;
         const body = event.body ? JSON.parse(event.body) : undefined;
         const review = body?.review;
 
